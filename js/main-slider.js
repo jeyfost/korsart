@@ -34,6 +34,8 @@ $(window).on("load", function() {
 			$('#slider').height(minHeight);
 		}
 	}
+
+	$('#slider').height(parseInt($('#slider').height() - $('#slider').height() * 0.25));
 });
 
 function nextSlide() {
