@@ -133,6 +133,7 @@ include("../layouts/footer.php");
 			<div id="aboutHeader"><h3>Опыт моей работы:</h3></div>
 			<ul>
 				<li>Информационный портал <a href="https://tut.by/">TUT.BY</a></li>
+				<li>Информационный портал <a href="https://dev.by/">DEV.BY</a></li>
 				<li>Информационно-развлекательный портал <a href="http://www.chatoff.by/">&laquo;ChatOFF&raquo;</a></li>
 				<li>Журнал <a href="http://ladys.by/">&laquo;Женский Журнал&raquo;</a></li>
 				<li>Cвадебное агентство ART NOVIAS</li>
@@ -154,8 +155,6 @@ include("../layouts/footer.php");
 				<li><b>2013 гг.</b> — курс фотожурналистики от Белорусской Ассоциации Журналистов (БАЖ)</li>
 				<li><b>2015 гг.</b> — участник фотопроекта &laquo;Дружба Народов&raquo;, представлял Беларусь среди 15 стран</li>
 			</ul>
-			<br />
-			<p>С 2014 года я занимаюсь лишь любительской фотографией и не работаю ни на одно издание или ресурс.</p>
 		</div>
 		<div style="clear: both;"></div>
 	</section>
