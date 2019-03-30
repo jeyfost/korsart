@@ -27,7 +27,6 @@ if(substr($_SERVER['REQUEST_URI'], 1, 5) == "blog/") {
 	$url = explode("/", substr($_SERVER['REQUEST_URI'], 1));
 	$address = $url[1];
 }
-
 $linkCheckResult = $mysqli->query("SELECT * FROM subcategories WHERE sef_link = '" . $address . "'");
 $linkCheck = $linkCheckResult->fetch_array(MYSQLI_NUM);
 
@@ -136,7 +135,11 @@ if ($linkCheck[0] > 0) {
 						}
 					}
 				} else {
-					header("Location: /");
+				    if($url[0] == "services") {
+				        $type = "services";
+                    } else {
+                        header("Location: /");
+                    }
 				}
 			}
 		}
@@ -163,7 +166,18 @@ if ($linkCheck[0] > 0) {
 
 	<meta charset="utf-8" />
 
-	<title><?= $gallery['title'] ?></title>
+	<title>
+        <?php
+            if($url[0] == "services") {
+                $titleResult = $mysqli->query("SELECT title FROM prices_subcategories WHERE sef_link = '".$address."'");
+                $title = $titleResult->fetch_array(MYSQLI_NUM);
+
+                echo $title[0];
+            } else {
+                echo $gallery['title'];
+            }
+        ?>
+    </title>
 	<meta property="og:title" content="<?= $gallery['title'] ?>" />
 	<meta property="og:type" content="article" />
 	<meta property="og:url" content="<?= $_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'] ?>" />
@@ -232,25 +246,29 @@ if ($linkCheck[0] > 0) {
 	<?php
 		$categories = array();
 
-		$categoryResult = $mysqli->query("SELECT * FROM categories WHERE sef_link <> 'about' ORDER BY priority");
-		while($category = $categoryResult->fetch_assoc()) {
-			if($category['id'] == BLOG_ID) {
-				$subcategoryResult = $mysqli->query("SELECT * FROM blog_subcategories ORDER BY priority");
-			} else {
-				$subcategoryResult = $mysqli->query("SELECT * FROM subcategories WHERE category_id = '".$category['id']."' ORDER BY priority");
-			}
+        $categoryResult = $mysqli->query("SELECT * FROM categories WHERE showing = '1' ORDER BY priority");
+        while($category = $categoryResult->fetch_assoc()) {
+            if($category['id'] == BLOG_ID) {
+                $subcategoryResult = $mysqli->query("SELECT * FROM blog_subcategories ORDER BY priority");
+            } else {
+                if($category['id'] == SERVICES_ID) {
+                    $subcategoryResult = $mysqli->query("SELECT * FROM prices_subcategories ORDER BY priority");
+                } else {
+                    $subcategoryResult = $mysqli->query("SELECT * FROM subcategories WHERE category_id = '".$category['id']."' ORDER BY priority");
+                }
+            }
 
-			if($subcategoryResult->num_rows > 0) {
-				$subcategories = array();
+            if($subcategoryResult->num_rows > 0) {
+                $subcategories = array();
 
-				while($subcategory = $subcategoryResult->fetch_assoc()) {
-					array_push($subcategories, $subcategory);
-				}
+                while($subcategory = $subcategoryResult->fetch_assoc()) {
+                    array_push($subcategories, $subcategory);
+                }
 
-				$category['subcategories'] = $subcategories;
-			}
-			array_push($categories, $category);
-		}
+                $category['subcategories'] = $subcategories;
+            }
+            array_push($categories, $category);
+        }
 
 	?>
 
@@ -906,6 +924,38 @@ if ($linkCheck[0] > 0) {
 				";
 			}
 		}
+
+		if($type = "services") {
+		    echo "
+                <div class='section gallerySection text-center' style='margin: 20px auto auto auto;'>
+                    <br /><br />
+                    <div class='postHeader'>".$title[0]."</div>
+                    <br /><br />
+            ";
+
+		    $serviceIDResult = $mysqli->query("SELECT id FROM prices_subcategories WHERE sef_link = '".$address."'");
+		    $serviceID = $serviceIDResult->fetch_array(MYSQLI_NUM);
+
+		    $serviceDescriptionResult = $mysqli->query("SELECT text FROM prices_subcategories WHERE sef_link = '".$address."'");
+		    $serviceDescription = $serviceDescriptionResult->fetch_array(MYSQLI_NUM);
+
+		    $serviceResult = $mysqli->query("SELECT * FROM prices_items WHERE prices_category_id = '".$serviceID[0]."'");
+		    while($service = $serviceResult->fetch_assoc()) {
+		        echo "
+		            <div class='serviceTab'>
+		                <div class='serviceTabName'>".$service['name']."</div>
+		                <br />
+                        <div class='serviceTabDescription text-left'>".nl2br($service['description'])."</div>
+                    </div>
+		        ";
+            }
+
+            echo "
+                    <br /><br />
+                    <div class='text-left'>".$serviceDescription[0]."</div>
+                </div>
+            ";
+        }
 	?>
 
 	<div onclick="scrollToTop()" id="scroll"><i class="fa fa-chevron-up" aria-hidden="true"></i></div>

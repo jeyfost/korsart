@@ -14,11 +14,11 @@ if($_SESSION['userID'] != 1) {
 }
 
 if(!empty($_REQUEST['id'])) {
-	$idCheckResult = $mysqli->query("SELECT COUNT(id) FROM services WHERE id = '".$mysqli->real_escape_string($_REQUEST['id'])."'");
+	$idCheckResult = $mysqli->query("SELECT COUNT(id) FROM prices_subcategories WHERE id = '".$mysqli->real_escape_string($_REQUEST['id'])."'");
 	$idCheck = $idCheckResult->fetch_array(MYSQLI_NUM);
 
 	if($idCheck[0] == 0) {
-		header("Locaton: index.php");
+		header("Location: index.php");
 	}
 }
 
@@ -114,6 +114,11 @@ if(!empty($_REQUEST['id'])) {
 				<i class="fa fa-list-ul" aria-hidden="true"></i><span> Услуги</span>
 			</div>
 		</a>
+        <a href="/admin/products/">
+            <div class="menuPoint">
+                <i class="fa fa-clone" aria-hidden="true"></i><span> Продукты</span>
+            </div>
+        </a>
 		<a href="/admin/galleries/">
 			<div class="menuPoint">
 				<i class="fa fa-camera" aria-hidden="true"></i><span> Галереи</span>
@@ -140,7 +145,7 @@ if(!empty($_REQUEST['id'])) {
 			<select id="serviceSelect" name="service" onchange="window.location = '?id=' + this.options[this.selectedIndex].value">
 				<option value="">- Выберите услугу -</option>
 				<?php
-					$serviceNameResult = $mysqli->query("SELECT * FROM services");
+					$serviceNameResult = $mysqli->query("SELECT * FROM prices_subcategories ORDER BY priority");
 					while($serviceName = $serviceNameResult->fetch_assoc()) {
 						echo "
 							<option value='".$serviceName['id']."'"; if($serviceName['id'] == $_REQUEST['id']) {echo " selected";} echo ">".$serviceName['name']."</option>
@@ -153,7 +158,7 @@ if(!empty($_REQUEST['id'])) {
 
 			<?php
 				if(!empty($_REQUEST['id'])) {
-					$serviceResult = $mysqli->query("SELECT * FROM services WHERE id = '".$mysqli->real_escape_string($_REQUEST['id'])."'");
+					$serviceResult = $mysqli->query("SELECT * FROM prices_subcategories WHERE id = '".$mysqli->real_escape_string($_REQUEST['id'])."'");
 					$service = $serviceResult->fetch_assoc();
 
 					$serviceList = "";
@@ -181,14 +186,41 @@ if(!empty($_REQUEST['id'])) {
 						<br />
 						<input type='text' id='serviceNameInput' name='serviceName' value='".$service['name']."' />
 						<br /><br />
-						<label for='serviceDescriptionInput'>Описание:</label>
+						<label for='serviceSefLinkInput'>Адресс ссылки:</label>
 						<br />
-						<textarea id='serviceDescriptionInput' name='serviceDescription' onkeydown='textAreaHeight(this)'>".str_replace('<br />', '', $service['description'])."</textarea>
+						<input type='text' id='serviceSefLinkInput' name='serviceSefLink' value='".$service['sef_link']."' />
 						<br /><br />
+						<label for='serviceTextInput'>Описание:</label>
+						<br />
+						<textarea id='serviceTextInput' name='serviceText' onkeydown='textAreaHeight(this)'>".str_replace('<br />', '', $service['text'])."</textarea>
+						<br /><br />
+						<label for='servicePrioritySelect'>Приоритет:</label>
+						<br />
+						<select id='servicePrioritySelect' name='servicePriority'>
+						";
+
+					    $maxPriorityResult = $mysqli->query("SELECT MAX(priority) FROM prices_subcategories");
+					    $maxPriority = $maxPriorityResult->fetch_array(MYSQLI_NUM);
+
+					    for($i = 1; $i <= $maxPriority[0]; $i++) {
+					        echo "<option value='".$i."'"; if($i == $service['priority']) {echo " selected";} echo ">".$i."</option>";
+                        }
+
+					    echo "
+                        </select>
+                        <br /><br />
 						<label for='serviceListInput'>Пункты услуги (через запятую):<br /><span style='font-size: 14px; font-weight: bold;'>Последний пункт будет выделен жирным шрифтом</span></label>
 						<br />
 						<textarea id='serviceListInput' name='serviceList' onkeydown='textAreaHeight(this)'>".$serviceList."</textarea>
 						<br/><br />
+						<label for='serviceKeywordsInput'>Ключевые слова страницы с услугой (<b>meta-тег keywords</b>):</label>
+						<br />
+						<input id='serviceKeywordsInput' name='serviceKeywords' value='".$service['keywords']."' />
+						<br /><br />
+						<label for='serviceDescriptionInput'>Описание для страницы с услугой (<b>meta-тег description</b>):</label>
+						<br />
+						<input id='serviceDescriptionInput' name='serviceDescription' value='".$service['description']."' />
+						<br /><br />
 						<div style='width: 100%;'>
 							<input type='button' id='editServiceSubmit' value='Редактировать' onmouseover='buttonHover(\"editServiceSubmit\", 1)' onmouseout='buttonHover(\"editServiceSubmit\", 0)' onclick='editService()' class='button relative' />
 							<input type='button' id='deleteServiceSubmit' value='Удалить' onmouseover='buttonHoverRed(\"deleteServiceSubmit\", 1)' onmouseout='buttonHoverRed(\"deleteServiceSubmit\", 0)' onclick='deleteService()' class='button relative' style='margin-left: 10px;' />

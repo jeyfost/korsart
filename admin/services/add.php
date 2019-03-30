@@ -105,6 +105,11 @@ if($_SESSION['userID'] != 1) {
 				<i class="fa fa-list-ul" aria-hidden="true"></i><span> Услуги</span>
 			</div>
 		</a>
+        <a href="/admin/products/">
+            <div class="menuPoint">
+                <i class="fa fa-clone" aria-hidden="true"></i><span> Продукты</span>
+            </div>
+        </a>
 		<a href="/admin/galleries/">
 			<div class="menuPoint">
 				<i class="fa fa-camera" aria-hidden="true"></i><span> Галереи</span>
@@ -136,14 +141,39 @@ if($_SESSION['userID'] != 1) {
 			<br />
 			<input type='text' id='serviceNameInput' name='serviceName' />
 			<br /><br />
-			<label for='serviceDescriptionInput'>Описание:</label>
+            <label for='serviceSefLinkInput'>Адресс ссылки:</label>
+            <br />
+            <input type='text' id='serviceSefLinkInput' name='serviceSefLink' />
+            <br /><br />
+			<label for='serviceTextInput'>Описание:</label>
 			<br />
-			<textarea id='serviceDescriptionInput' name='serviceDescription' onkeydown='textAreaHeight(this)'></textarea>
+			<textarea id='serviceTextInput' name='serviceText' onkeydown='textAreaHeight(this)'></textarea>
 			<br /><br />
+            <label for="servicePrioritySelect">Приоритет:</label>
+            <br />
+            <select id="servicePrioritySelect" name="servicePriority">
+                <?php
+                    $maxPriorityResult = $mysqli->query("SELECT MAX(priority) FROM prices_subcategories");
+                    $maxPriority = $maxPriorityResult->fetch_array(MYSQLI_NUM);
+
+                    for($i = 0; $i <= $maxPriority[0]; $i++) {
+                        echo "<option value='".($i + 1)."'"; if($i == $maxPriority[0]) {echo " selected";} echo ">".($i + 1)."</option>";
+                    }
+                ?>
+            </select>
+            <br /><br />
 			<label for='serviceListInput'>Пункты услуги (через запятую):<br /><span style='font-size: 14px; font-weight: bold;'>Последний пункт будет выделен жирным шрифтом</span></label>
 			<br />
 			<textarea id='serviceListInput' name='serviceList' onkeydown='textAreaHeight(this)'></textarea>
 			<br /><br />
+            <label for='serviceKeywordsInput'>Ключевые слова страницы с услугой (<b>meta-тег keywords</b>):</label>
+            <br />
+            <input id='serviceKeywordsInput' name='serviceKeywords' />
+            <br /><br />
+            <label for='serviceDescriptionInput'>Описание для страницы с услугой (<b>meta-тег description</b>):</label>
+            <br />
+            <input id='serviceDescriptionInput' name='serviceDescription' />
+            <br /><br />
 			<input type='button' id='addServiceSubmit' value='Добавить' onmouseover='buttonHover("addServiceSubmit", 1)' onmouseout='buttonHover("addServiceSubmit", 0)' onclick='addService()' class='button' />
 		</form>
 	</div>

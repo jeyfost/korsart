@@ -57,6 +57,7 @@ include("../layouts/footer.php");
 	<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 	<script type="text/javascript" src="/js/instafeed.js"></script>
 	<script type="text/javascript" src="/js/common.js"></script>
+	<script type="text/javascript" src="/js/services.js"></script>
 	<script type="text/javascript" src="/js/ya.js"></script>
 	<!-- Global site tag (gtag.js) - Google Analytics -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=UA-108937733-1"></script>
@@ -92,25 +93,29 @@ include("../layouts/footer.php");
 	<?php
 		$categories = array();
 
-		$categoryResult = $mysqli->query("SELECT * FROM categories WHERE sef_link <> 'about' ORDER BY priority");
-		while($category = $categoryResult->fetch_assoc()) {
-			if($category['id'] == BLOG_ID) {
-				$subcategoryResult = $mysqli->query("SELECT * FROM blog_subcategories ORDER BY priority");
-			} else {
-				$subcategoryResult = $mysqli->query("SELECT * FROM subcategories WHERE category_id = '".$category['id']."' ORDER BY priority");
-			}
+        $categoryResult = $mysqli->query("SELECT * FROM categories WHERE showing = '1' ORDER BY priority");
+        while($category = $categoryResult->fetch_assoc()) {
+            if($category['id'] == BLOG_ID) {
+                $subcategoryResult = $mysqli->query("SELECT * FROM blog_subcategories ORDER BY priority");
+            } else {
+                if($category['id'] == SERVICES_ID) {
+                    $subcategoryResult = $mysqli->query("SELECT * FROM prices_subcategories ORDER BY priority");
+                } else {
+                    $subcategoryResult = $mysqli->query("SELECT * FROM subcategories WHERE category_id = '".$category['id']."' ORDER BY priority");
+                }
+            }
 
-			if($subcategoryResult->num_rows > 0) {
-				$subcategories = array();
+            if($subcategoryResult->num_rows > 0) {
+                $subcategories = array();
 
-				while($subcategory = $subcategoryResult->fetch_assoc()) {
-					array_push($subcategories, $subcategory);
-				}
+                while($subcategory = $subcategoryResult->fetch_assoc()) {
+                    array_push($subcategories, $subcategory);
+                }
 
-				$category['subcategories'] = $subcategories;
-			}
-			array_push($categories, $category);
-		}
+                $category['subcategories'] = $subcategories;
+            }
+            array_push($categories, $category);
+        }
 
 	?>
 
@@ -133,7 +138,7 @@ include("../layouts/footer.php");
 		<br />
 		<div class="sectionHeader" style="margin-top: 40px;">
 			<?php
-				$serviceResult = $mysqli->query("SELECT * FROM services ORDER BY id");
+				$serviceResult = $mysqli->query("SELECT * FROM prices_subcategories ORDER BY priority");
 				while($service = $serviceResult->fetch_assoc()) {
 					echo "
 						<div class='serviceBlock' itemscope itemtype='http://schema.org/Product'>
@@ -145,7 +150,7 @@ include("../layouts/footer.php");
 									<span itemprop='name' class='serviceFont'>".$service['name']."</span>
 								</div>
 								<br /><br />
-								<p itemprop='description'>".$service['description']."</p>
+								<p itemprop='description'>".$service['text']."</p>
 								<div class='sectionHeader'>
 									<div class='line'></div>
 								</div>
@@ -170,6 +175,10 @@ include("../layouts/footer.php");
 
 					echo "
 								</ul>
+								<br />
+								<div id='newServiceButtonContainer'>
+                                    <a href='/services/".$service['sef_link']."'><input type='button' id='newServiceButton".$service['id']."' class='newServiceButton' value='Подробнее' onmouseover='changeServiceButton(1, \"newServiceButton".$service['id']."\")' onmouseout='changeServiceButton(0, \"newServiceButton".$service['id']."\")' /></a>
+                                </div>
 							</div>
 							<div style='clear: both;'></div>
 						</div>

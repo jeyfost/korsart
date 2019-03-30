@@ -45,7 +45,7 @@ p strong a {color: #d19166; transition: .3s;}
 #sideMenu {background-color: #fff; width: 300px; z-index: 3; position: absolute; right: 0; top: 0; display: none;}
 #menuContent {width: 100%; text-align: center; margin-top: 90px; background-color: #fff; padding-bottom: 10px;}
 #newReviewButtonContainer {position: absolute; right: 100px; margin-top: 40px;}
-#newReviewButton {width: 300px; height: 50px; border: 1px solid #e6e6e6; background-color: #fff; transition: .3s; color: #000; text-transform: uppercase; font-size: 12px; font-family: "Didact Gothic", sans-serif; cursor: pointer;}
+#newReviewButton, .newServiceButton {width: 300px; height: 50px; border: 1px solid #e6e6e6; background-color: #fff; transition: .3s; color: #000; text-transform: uppercase; font-size: 12px; font-family: "Didact Gothic", sans-serif; cursor: pointer;}
 #photoInput {width: 80%; height: 30px; padding: 15px 10px 5px 10px; border: 1px solid #a9a9a9; cursor: pointer; font-family: "Didact Gothic", sans-serif; font-size: 12px; letter-spacing: 2px;}
 #reviewForm input, #reviewForm textarea, #messageForm input, #messageForm textarea, #commentForm input, #commentForm textarea {font-family: "Didact Gothic", sans-serif; color: #474747; font-size: 12px; width: 100%; border: none; border-bottom: 1px solid #a9a9a9; padding-top: 10px; padding-bottom: 10px; margin-bottom: 10px;}
 #reviewForm textarea, #messageForm textarea {resize: none; padding-bottom: 0;}
@@ -106,9 +106,9 @@ p strong a {color: #d19166; transition: .3s;}
 .reviewPhoto {display: inline-block; width: 30%; text-align: center; vertical-align: top;}
 .review {display: inline-block; width: 68%;}
 .reviewPhoto img {width: 100%; max-width: 300px !important;}
-.reviewHeader h1 {font-family: "Didact Gothic", sans-serif; color: #474747; font-size: 20px; letter-spacing: 2px;}
+.reviewHeader h1, .serviceTabName {font-family: "Didact Gothic", sans-serif; color: #474747; font-size: 20px; letter-spacing: 2px;}
 .reviewHeader {width: 100%; text-align: center;}
-.review p {font-family: "Didact Gothic", sans-serif; color: #474747; font-size: 14px; letter-spacing: 1px; line-height: 2;}
+.review p, .serviceTabDescription {font-family: "Didact Gothic", sans-serif; color: #474747; font-size: 14px; letter-spacing: 1px; line-height: 2;}
 .third {display: inline-block; width: 30%; vertical-align: top; text-align: center; font-family: "Didact Gothic", sans-serif; font-size: 14px; letter-spacing: 2px; color: #474747;}
 .third strong {font-size: 16px;}
 .third a {transition: .3s; color: #474747;}
@@ -160,3 +160,5 @@ p strong a {color: #d19166; transition: .3s;}
 .galleryName {z-index: 2; height: 50px; line-height: 50px; background-color: #f9e4d6; text-align: center; width: 300px; opacity: .9; transition: .3s; display: inline-block; vertical-align: middle; margin-top: -4px;}
 .galleryName span {opacity: 1 !important; font-family: "Open Sans", sans-serif; font-size: 14px; color: #262626;}
 .text-center {text-align: center;}
+.text-left {text-align: left;}
+.serviceTab {width: 300px; display: inline-block; vertical-align: top; margin-top: 20px; margin-left: 20px; transition: .3s; border: 1px solid #e6e6e6; background-color: #fafafa; padding: 10px;}

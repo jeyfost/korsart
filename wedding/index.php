@@ -101,12 +101,16 @@ include("../layouts/footer.php");
     <?php
         $categories = array();
 
-        $categoryResult = $mysqli->query("SELECT * FROM categories WHERE sef_link <> 'about' ORDER BY priority");
+        $categoryResult = $mysqli->query("SELECT * FROM categories WHERE showing = '1' ORDER BY priority");
         while($category = $categoryResult->fetch_assoc()) {
             if($category['id'] == BLOG_ID) {
                 $subcategoryResult = $mysqli->query("SELECT * FROM blog_subcategories ORDER BY priority");
             } else {
-                $subcategoryResult = $mysqli->query("SELECT * FROM subcategories WHERE category_id = '".$category['id']."' ORDER BY priority");
+                if($category['id'] == SERVICES_ID) {
+                    $subcategoryResult = $mysqli->query("SELECT * FROM prices_subcategories ORDER BY priority");
+                } else {
+                    $subcategoryResult = $mysqli->query("SELECT * FROM subcategories WHERE category_id = '".$category['id']."' ORDER BY priority");
+                }
             }
 
             if($subcategoryResult->num_rows > 0) {
@@ -120,6 +124,7 @@ include("../layouts/footer.php");
             }
             array_push($categories, $category);
         }
+
     ?>
 
     <?= showMenu_2ndLevel(null, $categories, $settings) ?>
