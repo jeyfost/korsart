@@ -17,7 +17,11 @@ if($idCheck[0] > 0) {
 	if($id == BLOG_ID) {
 		$subcategoryResult = $mysqli->query("SELECT * FROM blog_subcategories ORDER BY priority");
 	} else {
-		$subcategoryResult = $mysqli->query("SELECT * FROM subcategories WHERE category_id = '".$id."' ORDER BY priority");
+	    if($id == SERVICES_ID) {
+            $subcategoryResult = $mysqli->query("SELECT * FROM prices_subcategories ORDER BY priority");
+        } else {
+            $subcategoryResult = $mysqli->query("SELECT * FROM subcategories WHERE category_id = '".$id."' ORDER BY priority");
+        }
 	}
 
 	while($subcategory = $subcategoryResult->fetch_assoc()) {
