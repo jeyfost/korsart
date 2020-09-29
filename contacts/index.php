@@ -145,7 +145,7 @@ include("../layouts/footer.php");
 		<div class="third">
 			<span>Соц. сети</span>
 			<br />
-			<a href="https://www.instagram.com/korsart_wedding/" target="_blank"><strong>instagram</strong></a>
+			<a href="https://www.instagram.com/korsartby/" target="_blank"><strong>instagram</strong></a>
 		</div>
 		<br /><br /><br />
         <a href="/about/"><input type="button" id="allReviewsButton" value="Об авторе" onmouseover="reviewsButton(1)" onmouseout="reviewsButton(0)" /></a>

@@ -168,7 +168,7 @@ include("../layouts/footer.php");
 		<div class="sectionHeader">
 			<div class="sectionName">Следите за моими работами в Instagram</div>
 			<br />
-			<a href="https://www.instagram.com/korsart_wedding/"><span class="smallFont">@korsart_wedding</span></a>
+			<a href="https://www.instagram.com/korsartby/"><span class="smallFont">@korsartby</span></a>
 		</div>
 		<br />
 		<div class="sectionHeader" style="margin-top: 40px;">
